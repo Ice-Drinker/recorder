@@ -1,0 +1,3 @@
+rootProject.name='MasterAudio'
+include ':app'
+include ':lib_gxrb_audio'
