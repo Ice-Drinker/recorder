@@ -1,10 +1,9 @@
 package cn.com.gxrb.lib.audio
 
 import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
 import android.media.MediaRecorder
-import android.widget.Toast
 import cn.com.gxrb.lib.audio.config.AudioConfig
+import cn.com.gxrb.lib.audio.utils.AudioUIUtils
 import java.io.File
 
 class RbAudioArmMachine private constructor() {
@@ -12,7 +11,7 @@ class RbAudioArmMachine private constructor() {
         private set
     private var innerRecording = false
     @Volatile
-    private var recording = false
+    var recording = false
     private var mRecordCallback: AudioRecordCallback? = null
     private var mPlayCallback: AudioPlayCallback? = null
     var recordAudioPath: String? = null
@@ -21,6 +20,10 @@ class RbAudioArmMachine private constructor() {
     private var endTime: Long = 0
     private var mPlayer: MediaPlayer? = null
     private var mRecorder: MediaRecorder? = null
+    private val REPEAT_INTERVAL = 40L
+
+    val duration: Int
+        get() = (endTime - startTime).toInt()
 
     fun startRecord(callback: AudioRecordCallback) {
         synchronized(recording) {
@@ -61,9 +64,6 @@ class RbAudioArmMachine private constructor() {
         }
     }
 
-    val duration: Int
-        get() = (endTime - startTime).toInt()
-
     interface AudioRecordCallback {
         fun recordComplete(duration: Long)
     }
@@ -90,11 +90,12 @@ class RbAudioArmMachine private constructor() {
                     audioFile.mkdirs()
 
                 synchronized(recording) {
-                    if (recording == false) return
+                    if (!recording) return
                     mRecorder!!.prepare()
                     mRecorder!!.start()
                 }
                 innerRecording = true
+
                 object : Thread() {
                     override fun run() {
                         while (recording && innerRecording) {
@@ -122,27 +123,29 @@ class RbAudioArmMachine private constructor() {
             try {
                 mPlayer = MediaPlayer()
                 mPlayer!!.setDataSource(audioPath)
-                mPlayer!!.setOnCompletionListener(object : OnCompletionListener {
-                    override fun onCompletion(mp: MediaPlayer) {
-                        mPlayCallback!!.playComplete()
-                        isPlayingRecord = false
-                    }
-                })
+                mPlayer!!.setOnCompletionListener {
+                    mPlayCallback!!.playComplete()
+                    isPlayingRecord = false
+                }
                 mPlayer!!.prepare()
                 mPlayer!!.start()
                 isPlayingRecord = true
             } catch (e: Exception) {
-                Toast.makeText(
-                    AudioConfig.get().context,
-                    "语音文件已损坏或不存在",
-                    Toast.LENGTH_LONG
-                ).show()
+                AudioUIUtils.toastLongMessage("语音文件已损坏或不存在")
                 e.printStackTrace()
                 mPlayCallback!!.playComplete()
                 isPlayingRecord = false
             }
         }
 
+    }
+
+    fun getMediaRecorder(): MediaRecorder? {
+        return mRecorder
+    }
+
+    fun getMediaPlayer(): MediaPlayer? {
+        return mPlayer
     }
 
     companion object {
@@ -155,6 +158,4 @@ class RbAudioArmMachine private constructor() {
 
         val instance = RbAudioArmMachine()
     }
-
-
 }

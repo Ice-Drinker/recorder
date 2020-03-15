@@ -19,11 +19,7 @@ class RecordView(context: Context, attributes: AttributeSet) : FrameLayout(conte
         View.inflate(context, R.layout.view_audio, this)
     }
 
-    override fun popupAreaShow() {
-
-    }
-
-    override fun popupAreaHide() {
+    override fun updateAmplitude(x: Float) {
 
     }
 
@@ -41,6 +37,14 @@ class RecordView(context: Context, attributes: AttributeSet) : FrameLayout(conte
             mVolumeAnim?.stop()
             voice_recording_view.visibility = View.GONE
         }
+    }
+
+    override fun playRecord() {
+
+    }
+
+    override fun stopPlayRecord() {
+
     }
 
     override fun tooShortRecording() {

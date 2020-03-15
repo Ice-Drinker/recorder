@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.com.gxrb.lib.audio" />
+    package="cn.com.gxrb.lib.audio">
+
+    <application>
+        <activity android:name=".view.RbAudioActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+    </application>
+</manifest>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- （列表第一个框项） 顶部有圆角，底部是直角,上下左右都有边框 -->
+    <item>
+        <shape android:shape="rectangle" >
+
+            <!-- 背景填充色 -->
+            <solid android:color="@color/audio_recorder_bg" />
+
+            <!-- 圆角弧度大小 -->
+            <corners
+                android:topLeftRadius="10dp"
+                android:topRightRadius="10dp" />
+        </shape>
+    </item>
+
+</layer-list>

@@ -1,6 +1,7 @@
 package cn.com.gxrb.lib.audio.config
 
 import android.content.Context
+import cn.com.gxrb.lib.audio.utils.BackgroundTasks
 
 class AudioConfig private constructor(){
 
@@ -20,6 +21,7 @@ class AudioConfig private constructor(){
     fun initDefault(context:Context, audioPath:String) {
         this.context = context
         this.audioPath = audioPath
+        BackgroundTasks.initInstance()
     }
 
 }

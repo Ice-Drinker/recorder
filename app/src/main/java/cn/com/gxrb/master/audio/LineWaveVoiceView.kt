@@ -34,6 +34,8 @@ class LineWaveVoiceView : View {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
         initView(attrs, context)
+        resetView(mWaveList, DEFAULT_WAVE_HEIGHT)
+        task = LineJitterTask()
     }
 
     constructor(
@@ -75,6 +77,9 @@ class LineWaveVoiceView : View {
         paint.setStyle(Paint.Style.FILL)
         //设置抗锯齿
         paint.setAntiAlias(true)
+
+        if(mWaveList.size < 9)
+            return
         for (i in 0..9) {
             rectRight.left = widthCentre + textWidth / 2 + (1 + 2 * i) * lineWidth
             rectRight.top = heightCentre - lineWidth * mWaveList.get(i) / 2
