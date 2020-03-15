@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import cn.com.gxrb.lib.audio.IAudioRecord
 import cn.com.gxrb.lib.audio.R
 import cn.com.gxrb.lib.audio.RbAudioArmMachine
+import cn.com.gxrb.lib.audio.config.AudioConfig
 import cn.com.gxrb.lib.audio.utils.AudioUIUtils
 import kotlinx.android.synthetic.main.view_recorder.view.*
 import java.util.*
@@ -28,7 +29,7 @@ class RbRecorderView : FrameLayout, IAudioRecord {
     private var mFormatBuilder: StringBuilder? = null
     private var mFormatter: Formatter? = null
     var startTime = 0L
-    var maxLength = 10 * ONE_SECOND  //录音最长一分钟
+    var maxLength = AudioConfig.get().audioRecordMaxTime  //录音最长一分钟
     var voiceAnim: AnimationDrawable? = null
 
     constructor(context: Context) : super(context)
